@@ -3,6 +3,5 @@
 *.pyc
 __pycache__/
 local_settings.py
-/media/
 /static_in_dev/
 requirements_dev.txt
