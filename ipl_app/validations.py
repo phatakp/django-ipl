@@ -17,9 +17,8 @@ venues = {'CSK': 'Chennai', 'DC': 'Delhi', 'KXIP': 'Punjab', 'KKR': 'Kolkata',
 
 
 def isWithinTime(match):
-    # return timezone.localtime().date() < match.date or \
-    #     (timezone.localtime().date() == match.date and timezone.localtime().hour < 12)
-    return True
+    return timezone.localtime().date() < match.date or \
+        (timezone.localtime().date() == match.date and timezone.localtime().hour < 12)
 
 
 def validate_and_save(player, match, team, bet_amt):

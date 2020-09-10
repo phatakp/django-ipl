@@ -200,9 +200,9 @@ class ScheduleView(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context['match_id'] = kwargs.get('id', None)
         if context['match_id'] is not None:
-            if timezone.localtime().date() > Match.objects.get(id=context['match_id']).date or \
-                (timezone.localtime().date() == Match.objects.get(
-                    id=context['match_id']).date and timezone.localtime().hour >= 12):
+            match_date = Match.objects.get(id=context['match_id']).date
+            if timezone.localtime().date() > match_date or \
+                    (timezone.localtime().date() == match_date and timezone.localtime().hour >= 12):
                 context['bets'] = Bet.objects.filter(match__id=context['match_id']).select_related('player',
                                                                                                    'match',
                                                                                                    'bet_team')
