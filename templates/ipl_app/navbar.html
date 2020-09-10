@@ -1,0 +1,67 @@
+{% load static %}
+{% load index %}
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">
+
+    {% if user.is_authenticated and curr_player.user == user %}
+    <span class="navbar-text ml-4">
+        <span style="--fg:{{curr_player.team.fore_color}}; --bg:{{curr_player.team.back_color}}">
+            Welcome, {{curr_player.user.first_name|split}}
+        </span>
+
+        {% if curr_player.team.name == 'KXIP' %}
+        <img src="/static/ipl_app/images/svg/{{curr_player.team.name|lower}}.png" height="{{curr_player.team.i_height}}"
+            width="{{curr_player.team.i_width}}" alt="">
+        {% else %}
+        <img src="/static/ipl_app/images/svg/{{curr_player.team.name|lower}}.svg" height="{{curr_player.team.i_height}}"
+            width="{{curr_player.team.i_width}}" alt="">
+        {% endif %}
+
+
+    </span>
+    {% else %}
+    <a class="navbar-brand m-auto" href="{% url 'iplapp:home' %}">IPL2020 is Here</a>
+    {% endif %}
+
+    {% if user.is_authenticated and curr_player.user == user %}
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="text-white default"><i class="fas fa-bars"></i></span>
+        <span class="text-white cross"><i class="fas fa-times"></i></i></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav m-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="{% url 'iplapp:dashboard' %}">Dashboard <span
+                        class="sr-only">(current)</span></a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'iplapp:schedule' %}"">Schedule</a>
+            </li>
+
+            <li class=" nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">Profile</a>
+                    <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="{% url 'accounts:pwd_change' %}">Change Password</a>
+                        <a class="dropdown-item" href="{% url 'accounts:logout' %}">Logout</a>
+                    </div>
+            </li>
+
+            {% if curr_player.staff %}
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">STAFF</a>
+                <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="{% url 'staff:uphistory' %}">Upload History</a>
+                    <a class="dropdown-item" href="{% url 'staff:teamstats' %}">Team Stats</a>
+                    <a class="dropdown-item" href="{% url 'staff:upmatch' %}">Upload Match</a>
+                    <a class="dropdown-item" href="{% url 'staff:defaults' %}">Default Bets</a>
+                </div>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+    {% endif %}
+</nav>

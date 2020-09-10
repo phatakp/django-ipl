@@ -1,0 +1,27 @@
+{% load static %}
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">
+    <a class="navbar-brand" href="{% url 'iplapp:home' %}">
+        <img src=" {% static 'ipl_app/images/ipl.png' %}" class="img-fluid" height="25" width="90" alt="">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="text-white"><i class="fas fa-bars"></i></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+
+                {% if user.is_authenticated %}
+                <a class="nav-link" href="{% url 'iplapp:dashboard' %}">Back to Dashboard <span
+                        class="sr-only">(current)</span></a>
+                {% else %}
+                <a class="nav-link" href="{% url 'iplapp:home' %}">Back to Home <span
+                        class="sr-only">(current)</span></a>
+                {% endif %}
+
+
+            </li>
+
+        </ul>
+    </div>
+</nav>

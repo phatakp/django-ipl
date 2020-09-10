@@ -1,0 +1,50 @@
+{% load static %}
+<div id="homepage" class="justify-content-center">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="column animated zoomIn slow">
+                <img id="ipl" src="{% static 'ipl_app/images/ipl.png' %}" alt="">
+            </div>
+        </div>
+        <div class="row images justify-content-center">
+            <div class="column left-teams justify-content-center animated fadeInLeft slow">
+                <!-- <div class="justify-content-center"> -->
+                <img id="csk" src="{% static 'ipl_app/images/svg/csk.svg' %}" alt="">
+                <!-- </div> -->
+                <!-- <div class="justify-content-center"> -->
+                <img id="dc" src="{% static 'ipl_app/images/svg/dc.svg' %}" alt="">
+                <!-- </div> -->
+                <!-- <div class="justify-content-center"> -->
+                <img id="kkr" src="{% static 'ipl_app/images/svg/kkr.svg' %}" alt="">
+                <!-- </div> -->
+                <!-- <div class="justify-content-center"> -->
+                <img id="rr" src="{% static 'ipl_app/images/svg/rr.svg' %}" alt="">
+                <!-- </div> -->
+            </div>
+            <div class="column trophy justify-content-center animated zoomIn slow">
+                <img id="trophy" src="{% static 'ipl_app/images/trophy.png' %}" alt="">
+            </div>
+            <div class="column right-teams justify-content-center animated fadeInRight slow">
+                <!-- <div class="col-3 animated fadeInLeft slow"> -->
+                <!-- <div class="justify-content-center"> -->
+                <img id="mi" src="{% static 'ipl_app/images/svg/mi.svg' %}" alt="">
+                <!-- </div> -->
+                <!-- <div class="justify-content-center"> -->
+                <img id="kxip" src="{% static 'ipl_app/images/svg/kxip.png' %}" alt="">
+                <!-- </div> -->
+                <!-- <div class="justify-content-center"> -->
+                <img id="srh" src="{% static 'ipl_app/images/svg/srh.svg' %}" alt="">
+                <!-- </div> -->
+                <!-- <div class="justify-content-center"> -->
+                <img id="rcb" src="{% static 'ipl_app/images/svg/rcb.svg' %}" alt="">
+                <!-- </div> -->
+                <!-- </div> -->
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="column">
+                <a class="btn" href="{% url 'accounts:login' %}">Enter the Field</a>
+            </div>
+        </div>
+    </div>
+</div>

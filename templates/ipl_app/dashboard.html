@@ -1,0 +1,327 @@
+{% extends 'ipl_app/base.html' %}
+{% load static %}
+{% load index %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+IPL | Dashboard
+{% endblock title %}
+
+
+{% block custom-style %}
+<link href="{% static 'ipl_app/css/style.css' %}" rel="stylesheet">
+
+{% endblock custom-style %}
+
+{% block custom-script %}
+<script type="text/javascript" src="{% static 'ipl_app/js/app.js' %}">
+</script>
+
+
+{% endblock custom-script %}
+
+
+{% block header %}
+<header>
+    {% include 'ipl_app/navbar.html' %}
+
+
+    {% if user == 'home' %}
+    {% include 'ipl_app/index.html' %}
+    {% endif %}
+
+
+
+</header>
+{% endblock header %}
+
+
+{% block main %}
+
+{% if user.is_authenticated and curr_player.user == user %}
+
+<div class=container-fluid>
+
+    <div class=" row mt-5">
+        <main class='col-lg-8 justify-content-center'>
+            <section id="match-section">
+                <div class="container-fluid m-0 p-0">
+
+                    {% if staff_message %}
+                    <p class="text-center">{{staff_message}}</p>
+                    {% endif %}
+
+                    {% for match in matches %}
+                    {% with forloop.counter0 as match_counter %}
+
+
+                    {% if match_counter == 0 or match.date != matches|previous_date:match_counter %}
+                    <h3 class="h3-responsive mb-4">Match(s) for: {{match.date|date:'M dS, Y'}}</h3>
+                    {% endif %}
+
+
+                    <div class="match-row">
+                        <div class="row">
+                            <div class="column match-head text-center">
+                                <h5 class="h5-responsive">Match {{match.num}}: </h5>
+                                <h5 class="h5-responsive"> {{match.home_team.get_name_display}}</h5>
+                                <i class="fab fa-vimeo-v"></i>
+                                <h5 class="h5-responsive"> {{match.away_team.get_name_display}}</h5>
+                            </div>
+                        </div>
+
+                        {% if messages and match.id == match_message.id %}
+                        <ul class="messages">
+                            {% for message in messages %}
+
+                            {% if message.tags == 'success' %}
+                            <li class="text-{{message.tags}}">{{message|safe}}</li>
+                            {% else %}
+                            <li class="text-danger">{{message|safe}}</li>
+                            {% endif %}
+
+
+                            {% endfor %}
+                        </ul>
+
+                        {% endif %}
+
+                        <div class="row team-row">
+                            <div class="column home-team justify-content-center">
+                                <img src="{{match.home_team.logo.url}}" alt="" class="img-fluid rounded">
+                            </div>
+
+                            <div class="column predictor align-items-center">
+                                <p class="my-0 pb-1 text-center text-info">Win Predictor</p>
+                                <div class="progress {% if match.home_win_pct >= 50 %}
+                                red
+                                {% else %}
+                                green
+                                {% endif %}">
+
+                                    <div class="home-bar 
+                                {% if match.home_win_pct >= 50 %}
+                                green
+                                {% else %}
+                                red
+                                {% endif %}
+                                    " style="--wid:{{match.home_win_pct}}%;">{{match.home_win_pct}}%</div>
+                                    <div class="away-bar 
+                                {% if match.away_win_pct >= 50 %}
+                                green
+                                {% else %}
+                                red
+                                {% endif %}
+                                    " style="--wid:{{match.away_win_pct}}%;">{{match.away_win_pct}}%</div>
+                                </div>
+
+                            </div>
+
+                            <div class="column away-team justify-content-center">
+                                <img src="{{match.away_team.logo.url}}" alt="" class="img-fluid rounded">
+                            </div>
+
+
+                        </div>
+
+                        <div class="row btn-row justify-content-center">
+                            <div class="column">
+                                <a class="btn btn-sm btn-bet show" href="#">Bet Now</a>
+                            </div>
+                            {% if curr_player.staff %}
+                            <div class="column">
+                                <a class="btn btn-sm btn-winner show" href="#">Winner</a>
+                            </div>
+                            <div class="column">
+                                <a class="btn btn-sm btn-def-bet show"
+                                    href="{% url 'staff:defaults' id=match.id %}">Default Bets</a>
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="row justify-content-center bet-row">
+                            <div class="column">
+                                <div class="mid">
+                                    <div>Select <span><i class="fas fa-angle-down"></i></span>
+                                    </div>
+
+                                    <label class="switch">
+                                        <input class="switch-input" type="checkbox" />
+                                        <span class="switch-label" data-on="{{match.away_team.name}}"
+                                            data-off="{{match.home_team.name}}" style="--hfg:{{match.home_team.fore_color}};
+                                        --hbg:{{match.home_team.back_color}}; --afg:{{match.away_team.fore_color}};
+                                        --abg:{{match.away_team.back_color}};"></span>
+                                        <span class="switch-handle"></span>
+                                    </label>
+                                </div>
+                                <div class="bet-form">
+                                    <form method="POST">
+                                        {% csrf_token %}
+                                        {{bet_form|index:match_counter|crispy}}
+
+                                        {% for field in bet_form|index:match_counter %}
+
+                                        {% for error in field.errors %}
+                                        {{error}}
+                                        {% endfor %}
+                                        {% endfor %}
+                                        {{bet_form|index:match_counter|nferrors}}
+                                        <input type="hidden" name="match" value={{match.id}}>
+                                        <input type="hidden" name="player" value={{curr_player.id}}>
+                                        <input type="hidden" name="team" value={{team}}>
+                                        <button class="btn btn-sm" type="submit"
+                                            name="{{bet_form|index:match_counter|prefix}}">Bet</button>
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        {% if curr_player.staff %}
+                        <div class="row justify-content-center winner-row">
+                            <div class="column match-form">
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    {{match_form|index:match_counter|crispy}}
+                                    <input type="hidden" name="match" value={{match.id}}>
+                                    <button class="btn btn-sm" type="submit"
+                                        name="{{match_form|index:match_counter|prefix}}">Submit
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                        {% endif %}
+
+                    </div>
+                    {% endwith %}
+                    {% empty %}
+                    <div class="match-row table-responsive text-nowrap">
+                        <table>
+                            <tr>
+                                <td>
+                                    <h4 class='h4-responsive my-3 ml-2'><strong>No Matches Today</strong></h4>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    {% endfor %}
+
+
+                </div>
+            </section>
+        </main>
+        <aside class="col-lg-4 col-sm-12 justify-content-center">
+            <section id="standings">
+                <div class="container-fluid">
+                    <h5 class="h5-responsive mb-2">Player Standings</h5>
+                    <div class="table-responsive">
+                        <table class="table w-auto text-nowrap">
+                            <thead>
+                                <tr class="deep-purple darken-4">
+                                    <th>Rank</th>
+                                    <th>Name</th>
+                                    <th>Net Amt</th>
+                                    <th>Bets Won</th>
+                                    <th>Bets Lost</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                {% for player in players %}
+
+                                {% if forloop.counter|divisibleby:2 %}
+                                <tr class="purple darken-4">
+                                    {% else %}
+                                <tr class="deep-purple darken-3">
+                                    {% endif %}
+                                    <th scope="row">{{forloop.counter}}</th>
+                                    <td>{{player.user.first_name|split}}</td>
+
+
+                                    {% if player.curr_amt >= 0 %}
+                                    <td class="text-success"><strong>{{player.curr_amt|floatformat:2}}</strong></td>
+                                    {% else %}
+                                    <td class="text-danger"><strong>{{player.curr_amt|floatformat:2}}</strong></td>
+                                    {% endif %}
+                                    <td>{{player.bets_won}}</td>
+                                    <td>{{player.bets_lost}}</td>
+
+
+                                </tr>
+                                {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section id="bet-history">
+                <div class="container-fluid">
+                    <h5 class="h5-responsive mb-2">Your Last 5 Bets</h5>
+                    <div class="table-responsive">
+                        <table class="table w-auto text-nowrap">
+                            <thead>
+                                <tr class="deep-purple darken-4">
+                                    <th>Match</th>
+                                    <th>Team</th>
+                                    <th>Amount</th>
+                                    <th>Bet Time</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                {% for bet in player_bets %}
+
+                                {% if forloop.counter|divisibleby:2 %}
+                                <tr class="purple darken-4">
+                                    {% else %}
+                                <tr class="deep-purple darken-3">
+                                    {% endif %}
+
+                                    {% if bet.match %}
+                                    <td>{{bet.match}}</td>
+                                    {% else %}
+                                    <td>IPL Winner</td>
+                                    {% endif %}
+
+
+                                    <td>{{bet.bet_team}}</td>
+                                    <td>{{bet.bet_amt}}</td>
+                                    <td><span>{{bet.create_time|date:'d-m-y'}}
+                                        </span><span>{{bet.create_time|time:'H:i'}}</span>
+                                    </td>
+
+                                    {% if bet.status == 'D' or bet.status == 'L' %}
+                                    <td class="text-danger">{{bet.get_status_display}}</td>
+                                    {% else %}
+                                    <td class="text-success">{{bet.get_status_display}}</td>
+                                    {% endif %}
+
+                                </tr>
+                                {% empty %}
+                                <tr class="deep-purple darken-3">
+                                    <td colspan="5">No Bets yet</td>
+                                </tr>
+                                {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+        </aside>
+    </div>
+</div>
+{% endif %}
+{% endblock main %}
+
+
+{% block footer %}
+
+{% endblock footer %}

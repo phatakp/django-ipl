@@ -1,0 +1,61 @@
+{% extends 'accounts/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+IPL | Pwd Change
+{% endblock title %}
+
+
+{% block custom-style %}
+<link href="{% static 'ipl_app/css/style.css' %}" rel="stylesheet">
+{% endblock custom-style %}
+
+{% block custom-script %}
+<script type="text/javascript" src="{% static 'ipl_app/js/app.js' %}">
+</script>
+{% endblock custom-script %}
+
+
+{% block header %}
+<header>
+    {% include 'accounts/navbar.html' %}
+
+    <div id="pwd-change-page" class="justify-content-center">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="column">
+                    <div class="card animated zoomIn">
+                        <h5 class="card-header white-text text-center py-2">
+                            <strong>Change Password</strong>
+                        </h5>
+                        <div class="card-body px-lg-5">
+                            <form id="pwd-change-form" method="POST">
+                                {% csrf_token %}
+
+                                {{form.old_password|as_crispy_field}}
+
+                                {{form.new_password1|as_crispy_field}}
+
+                                {{form.new_password2|as_crispy_field}}
+
+                                {{form.non_field_errors}}
+
+
+
+                                <button class="btn btn-warning btn-block my-4" type="submit">Submit</button>
+
+                                {% if message %}
+                                <small id="pwd-msg">{{message}}</small>
+                                {% endif %}
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</header>
+{% endblock header %}
