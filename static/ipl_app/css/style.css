@@ -1,0 +1,902 @@
+/* ------------Fonts------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dosis:wght@300;400;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Frijole&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    /* background-color: black; */
+    color: ivory;
+    font-family: 'Dosis', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: calc(10px + (19 - 14) * ((100vw - 300px) / (1600 - 300)));
+    line-height: calc(1em + (1.5 - 1.2) * ((100vh - 300px)/(1600 - 300)));
+    background: url("../images/back.jpg") repeat-y center center;
+    background-size: cover;
+}
+
+html,
+body {
+    height: auto;
+}
+
+
+/* -----------Navbar---------------- */
+
+.navbar {
+    z-index: 1;
+    font-family: 'Dosis', sans-serif;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    background-color: black;
+}
+
+.navbar-text span {
+    font-size: 1.2em;
+    font-weight: 800;
+    vertical-align: middle;
+    background: -webkit-linear-gradient(var(--fg), var(--bg));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+}
+
+.navbar-text img {
+    vertical-align: middle;
+}
+
+.navbar:not(.top-nav-collapse) {
+    background: black !important;
+}
+
+.top-nav-collapse {
+    background-color: black !important;
+}
+
+.navbar-brand {
+    margin: 0 1em;
+    font-family: 'Frijole', cursive;
+}
+
+.nav-item {
+    margin-right: 2em;
+}
+
+
+.nav-tabs .nav-item:last-child {
+    margin-right: 0;
+}
+
+.nav-item.active .nav-link {
+    background-color: transparent !important;
+}
+
+.nav-item .nav-link {
+    font-size: 0.9em;
+    color: #e9ec14 !important;
+}
+
+.nav-link:hover,
+.nav-link:focus {
+    color: #df56eb !important;
+    border: none;
+    box-shadow: 0 6px 6px 0 #eb3785;
+}
+
+.nav-tabs .nav-item.show .nav-link {
+    background-color: transparent !important;
+    color: #df56eb !important;
+}
+
+
+.dropdown-menu {
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.dropdown-item {
+    color: white !important;
+    font-size: smaller !important;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+    background-color: #4a0a66;
+}
+
+.navbar-toggler span.cross {
+    visibility: hidden;
+}
+
+/* ------------------------------------- */
+
+/* Main Page */
+
+#homepage .row .column img {
+    display: block;
+}
+
+#homepage .row .column {
+    display: inline;
+}
+
+#homepage .row .column .btn {
+    margin-top: -22em;
+    margin-bottom: 0;
+}
+
+.images {
+    margin-left: 2em;
+}
+
+#csk {
+    height: 9em;
+    width: 9em;
+    margin-top: -2em;
+    margin-left: -1em;
+}
+
+#dc {
+    height: 6em;
+    width: 6em;
+    /* margin-left: 2em; */
+}
+
+#kkr {
+    height: 7em;
+    width: 7em;
+    /* margin-left: -1.5em; */
+    margin-top: 2em;
+}
+
+#rr {
+    height: 7.5em;
+    width: 7.5em;
+    margin-top: 2em;
+    /* margin-left: 1em; */
+}
+
+
+#mi {
+    height: 5em;
+    width: 6em;
+    margin-top: 0em;
+    margin-left: 1em;
+}
+
+
+#kxip {
+    height: 5.5em;
+    width: 5.5em;
+    margin-top: 3em;
+    margin-left: 1em;
+
+}
+
+#srh {
+    height: 7em;
+    width: 7em;
+    margin-left: 0.7em;
+    margin-top: 2em;
+}
+
+#rcb {
+    height: 7em;
+    width: 7.5em;
+    margin-left: 0.5em;
+    margin-top: 1em;
+}
+
+
+#ipl {
+    height: 8em;
+    width: 16em;
+    margin-top: 8em;
+    /* margin-left: -2em; */
+}
+
+#trophy {
+    height: 40em;
+    width: 34em;
+    margin-left: -10em;
+    margin-top: 3em;
+}
+
+/* ----------Registration and Login------------ */
+
+
+#register-form .errorlist,
+#hint_id_new_password1,
+#hint_id_username,
+#hint_id_password1,
+#hint_id_password2 {
+    display: none;
+}
+
+#login-form .errorlist,
+#pwd-change-form .errorlist {
+    list-style: none;
+    color: red;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: small;
+    text-align: start;
+    margin-left: -3em;
+}
+
+#pwd-msg {
+    font-family: 'Rajdhani', sans-serif;
+    color: #30741b;
+    font-weight: 600;
+}
+
+.card {
+    background: #1d0d4e;
+    opacity: 0.9;
+    font-family: 'Rajdhani', sans-serif;
+}
+
+#login-page .card {
+    margin-top: 10em;
+}
+
+#register-page .card {
+    margin: 7em 2em 0 2em;
+    width: 30em;
+}
+
+#pwd-change-page .card {
+    margin-top: 8em;
+}
+
+.card-header {
+    font-family: 'Dosis', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+}
+
+.card .form-group input,
+.card .form-group select {
+    background-color: #2E0076;
+    color: #E6B43C;
+}
+
+.card .form-group label,
+.card .form-group select option {
+    font-family: 'Dosis', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: #b243e2;
+    font-size: small;
+}
+
+.asteriskField {
+    display: none;
+}
+
+#login-page .form-footer {
+    font-size: 0.8em;
+}
+
+
+.form-link {
+    color: #eb3785;
+    float: right;
+}
+
+.form-link:hover,
+.form-link:focus {
+    color: #e8eb37;
+}
+
+
+/* ----------Dashboard----------------- */
+
+.messages {
+    list-style: none;
+    margin-left: 1em;
+}
+
+
+.page-header {
+    font-family: 'Dosis', sans-serif;
+    letter-spacing: 0.15em;
+    color: #e45447;
+    text-transform: uppercase;
+    float: right;
+    margin-top: 2em;
+    margin-right: 1em;
+}
+
+main section,
+aside section {
+    padding: 5em 2em 2em 2em;
+
+}
+
+#match-section h3,
+#bet-history h5,
+#standings h5 {
+    font-family: 'Dosis', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-weight: 500;
+}
+
+.match-row {
+    border: 1px solid #3c3d3d;
+    border-radius: 0.5em;
+    border-bottom: 0.3em solid saddlebrown;
+    background: linear-gradient(90deg, #36057A, #320353);
+    margin-bottom: 2em;
+
+}
+
+.match-row {
+    color: #ecf02d !important;
+
+}
+
+.match-head {
+    vertical-align: middle;
+    align-items: center;
+}
+
+
+.match-head h5 {
+    float: left;
+    margin-left: 1.5em;
+    margin-right: 0;
+    margin-top: 0.15em;
+    text-transform: uppercase;
+    font-family: 'Dosis', sans-serif;
+    letter-spacing: 0.1em;
+}
+
+.match-head i {
+    float: left;
+    margin-left: 1.5em;
+    margin-top: 0.4em;
+}
+
+.btn-row .btn-bet,
+.btn-row .btn-winner {
+    display: none;
+}
+
+.btn-row .btn-bet.show,
+.btn-row .btn-winner.show {
+    display: flex;
+}
+
+
+.home-team,
+.away-team {
+    margin: auto;
+    padding: 1em;
+}
+
+
+.home-team .img-fluid,
+.away-team .img-fluid {
+    display: inline-block;
+    position: relative;
+    margin: auto;
+    min-width: 50px;
+    min-height: 40px;
+}
+
+.predictor {
+    margin: auto;
+}
+
+.predictor p,
+.progress div {
+    font-weight: 600;
+    font-size: 110%;
+}
+
+.progress {
+    width: 30em;
+    height: 3em;
+    vertical-align: middle;
+    margin: auto;
+    padding: 0;
+}
+
+.home-bar,
+.away-bar {
+    height: 3em;
+    width: var(--wid);
+    text-align: center;
+    vertical-align: middle;
+    /* To center it horizontally (if you want) */
+    line-height: 3em;
+    /* To center it vertically */
+    color: white;
+}
+
+.away-bar.green,
+.home-bar.green {
+    background-color: #4CAF50;
+}
+
+.away-bar.red,
+.home-bar.red {
+    background-color: #bb2a25;
+}
+
+.bet-row,
+.winner-row {
+    display: none;
+}
+
+.bet-row.show,
+.winner-row.show {
+    display: flex;
+}
+
+.bet-row .column {
+    border: 1px solid ivory;
+    border-radius: 1em;
+    padding: 1em;
+}
+
+.bet-row .column .mid,
+.bet-row .column .bet-form {
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+}
+
+
+.bet-form,
+.match-form {
+    margin: auto;
+    /* border: 1px solid ivory; */
+    /* border-radius: 1em; */
+    padding: 1em;
+    margin-bottom: 1em;
+}
+
+.bet-form form .form-group,
+.match-form form .form-group {
+    display: inline-block;
+    position: relative;
+}
+
+.bet-form form .form-group div,
+.match-form form .form-group div {
+    display: inline-block;
+    position: relative;
+    margin-left: 1em;
+}
+
+.bet-form form .form-group label {
+    display: none;
+}
+
+.bet-form form .form-group div {
+    width: 50%;
+    vertical-align: middle;
+}
+
+.bet-form form .form-group div input {
+    font-size: small;
+    font-family: 'Rajdhani', sans-serif;
+}
+
+.match-form form .form-group label {
+    display: inline-block;
+    position: relative;
+}
+
+.bet-form form button,
+.match-form form button {
+    display: inline-block;
+    position: relative
+}
+
+.bet-form form button {
+    margin-left: -5em;
+}
+
+
+
+/* Switch  */
+.mid {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-right: 2em;
+    margin-top: -3em;
+}
+
+.switch {
+    position: relative;
+    display: block;
+    width: 7em;
+    height: 3em;
+    padding: 0.2em;
+    margin: 0;
+    border-radius: 1.5em;
+    cursor: pointer;
+}
+
+.switch-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+}
+
+.switch-label {
+    position: relative;
+    display: block;
+    height: inherit;
+    font-weight: 600;
+    text-transform: uppercase;
+    background: linear-gradient(90deg, var(--hfg), var(--hbg));
+    border-radius: inherit;
+}
+
+
+.switch-label:before,
+.switch-label:after {
+    position: absolute;
+    top: 50%;
+    margin-top: -.5em;
+    line-height: 1;
+    -webkit-transition: inherit;
+    -moz-transition: inherit;
+    -o-transition: inherit;
+    transition: inherit;
+}
+
+.switch-label:before {
+    content: attr(data-off);
+    right: 1em;
+    color: var(--hfg);
+    /* text-shadow: 0 0.1em rgba(255, 255, 255, 0.5); */
+}
+
+.switch-label:after {
+    content: attr(data-on);
+    left: 1em;
+    color: var(--afg);
+    /* text-shadow: 0 0.1em rgba(0, 0, 0, 0.2); */
+    opacity: 0;
+}
+
+.switch-input:checked~.switch-label {
+    background: linear-gradient(90deg, var(--abg), var(--afg));
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.15), inset 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.switch-input:checked~.switch-label:before {
+    opacity: 0;
+}
+
+.switch-input:checked~.switch-label:after {
+    opacity: 1;
+}
+
+.switch-handle {
+    position: absolute;
+    top: 0.4em;
+    left: 0.4em;
+    width: 2.5em;
+    height: 2.5em;
+    background: linear-gradient(to bottom, #FFFFFF 40%, #f0f0f0);
+    background-image: -webkit-linear-gradient(top, #FFFFFF 40%, #f0f0f0);
+    border-radius: 100%;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.switch-handle:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -0.5em 0 0 -0.5em;
+    width: 1em;
+    height: 1em;
+    background: linear-gradient(to bottom, #eeeeee, #FFFFFF);
+    background-image: -webkit-linear-gradient(top, #eeeeee, #FFFFFF);
+    border-radius: 0.5em;
+    box-shadow: inset 0 1px rgba(0, 0, 0, 0.02);
+}
+
+.switch-input:checked~.switch-handle {
+    left: 4em;
+    box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Transition
+        ========================== */
+.switch-label,
+.switch-handle {
+    transition: All 0.3s ease;
+    -webkit-transition: All 0.3s ease;
+    -moz-transition: All 0.3s ease;
+    -o-transition: All 0.3s ease;
+}
+
+.message {
+    float: left;
+    font-family: 'Dosis', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+    margin-left: 1em;
+}
+
+/* Player Standing */
+#standings .table th,
+#standings .table td,
+#bet-history .table th,
+#bet-history .table td {
+    text-transform: uppercase;
+    line-height: 0.8em;
+    color: white;
+    text-align: center;
+    font-size: 1em;
+    font-family: 'Rajdhani', sans-serif;
+}
+
+
+/* Schedule Page */
+
+#schedule-section {
+    margin-top: 5em;
+}
+
+.match-list {
+    border: 1px solid #f9f9f9;
+    border-top: none;
+    border-bottom: 5px solid #e8eb37;
+    padding: 3em;
+}
+
+.match-list .row .team-logo,
+.match-list .row .team-name {
+    border-right: 1px solid #555454;
+}
+
+.match-list .row .team-logo div {
+    display: inline-block;
+    position: relative;
+}
+
+.match-list .row .team-name h4 {
+    background: -webkit-linear-gradient(var(--fg), var(--bg));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 600;
+}
+
+.match-list .row .team-name h4.short {
+    display: none;
+}
+
+.bets-row {
+    margin-top: 2em;
+
+}
+
+.bets-row th,
+.bets-row td {
+    font-size: small;
+    color: #e9ec14;
+}
+
+/*  ----------General------------- */
+.btn {
+    border-radius: 2em;
+    font-family: 'Dosis', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-size: large;
+    font-weight: 600;
+    background: linear-gradient(45deg, #36057A, #0b0353);
+    border: 1px solid #E6B43C;
+    box-shadow: 0 2px 4px 0 #eb3785;
+
+}
+
+.btn:hover,
+.btn:focus {
+    color: #e9ec14;
+    background: linear-gradient(45deg, #5c11c5, #2c29e7);
+    box-shadow: 0 6px 6px 0 #eb3785;
+
+}
+
+
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(100, 100, 200, 0.3);
+    -webkit-box-shadow: inset 0 0 6px rgba(100, 100, 200, 0.3);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: inset 0 0 6px rgba(200, 100, 150, 0.9);
+}
+
+/* --------------Media query------------ */
+
+@media only screen and (min-width: 768px) {
+
+    #homepage {
+        overflow: visible;
+        margin-top: -3em;
+    }
+
+
+    .navbar:not(.top-nav-collapse) {
+        background: transparent !important;
+    }
+}
+
+@media only screen and (min-width:497px) and (max-width:767px) {
+    .images {
+        margin-left: 1em;
+    }
+
+    #homepage .row .column .btn {
+        margin-top: -18em;
+    }
+}
+
+@media only screen and (max-width:496px) {
+    .trophy {
+        display: none !important;
+    }
+
+    .images {
+        margin-left: -1em;
+    }
+
+    #homepage .row .column .btn {
+        margin-top: 0em;
+    }
+}
+
+@media only screen and (max-width: 838px) {
+    .match-head td {
+        font-size: 0.85em;
+    }
+}
+
+@media only screen and (min-width: 667px) and (max-width: 693px) {
+    .match-head td {
+        font-size: 0.8em;
+    }
+}
+
+@media only screen and (min-width:557px) and (max-width: 944px) {
+
+    .team-logo div {
+        display: block;
+        margin: 2em;
+    }
+
+    .fab.fa-vimeo-v {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 571px) {
+    .match-list .row .team-name h4.short {
+        display: block;
+    }
+
+    .match-list .row .team-name h4.long {
+        display: none;
+    }
+
+
+}
+
+@media only screen and (min-width:449px) and (max-width:608px) {
+
+    .progress {
+        width: 15em;
+    }
+
+}
+
+@media only screen and (max-width:448px) {
+
+    #register-page .card {
+        margin: 7em 2em 0 2em;
+        width: auto;
+    }
+
+    .match-row {
+        width: 25em;
+    }
+
+    .home-team .img-fluid,
+    .away-team .img-fluid {
+        display: inline-block;
+        position: relative;
+        max-width: 30px;
+        max-height: 20px;
+        margin-top: 1em;
+
+    }
+
+    .home-team .img-fluid {
+        margin-left: -1.5em;
+    }
+
+    .away-team .img-fluid {
+        margin-left: -2em;
+    }
+
+    .progress {
+        width: 10em;
+        height: 2em;
+
+    }
+
+    .predictor {
+        margin: 1.5em -0.5em 0 -0.5em;
+    }
+
+    .home-bar,
+    .away-bar {
+        height: 2em;
+        line-height: 2em;
+    }
+
+    .mid {
+        max-width: 4em;
+        padding-left: 3em;
+        margin-top: 1em;
+    }
+
+    .bet-form,
+    .match-form {
+        margin-top: 1em;
+    }
+
+    .match-form .form-group div {
+        font-size: 0.9em;
+        margin-left: 0em;
+        margin-right: 0em;
+        width: 50%;
+    }
+
+    .match-form .btn {
+        padding-left: 0.75em;
+        padding-right: 0.75em;
+    }
+
+    .bets-row .table-responsive {
+        width: 60%;
+    }
+}
+
+/* ----------------------------------------- */
