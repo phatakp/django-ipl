@@ -4,4 +4,6 @@
 __pycache__/
 local_settings.py
 /static_in_dev/
+db.sqlite3
+db.sqlite3-journal
 requirements_dev.txt

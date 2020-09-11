@@ -220,7 +220,7 @@ IPL | Dashboard
                         <table class="table w-auto text-nowrap">
                             <thead>
                                 <tr class="deep-purple darken-4">
-                                    <th>Rank</th>
+                                    <th>Team</th>
                                     <th>Name</th>
                                     <th>Net Amt</th>
                                     <th>Bets Won</th>
@@ -237,7 +237,11 @@ IPL | Dashboard
                                     {% else %}
                                 <tr class="deep-purple darken-3">
                                     {% endif %}
-                                    <th scope="row">{{forloop.counter}}</th>
+                                    <th scope="row"><img src="{{player.team.logo.url}}"
+                                            height="{{ player.team.i_height|divide:player.team.name }}"
+                                            width="{{ player.team.i_width|divide:player.team.name }}" class="img-fluid
+                                            rounded" alt="">
+                                    </th>
                                     <td>{{player.user.first_name|split}}</td>
 
 

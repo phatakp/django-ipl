@@ -42,3 +42,23 @@ def nferrors(form_):
 @register.filter
 def previous_date(iterable, i):
     return iterable[i-1].date
+
+
+@register.filter
+def divide(number, team):
+    if team == 'CSK':
+        return int(number/2.1)
+    elif team == 'DC':
+        return int(number/1.7)
+    elif team == 'KXIP':
+        return int(number/1.4)
+    elif team == 'KKR':
+        return int(number/1.6)
+    elif team == 'MI':
+        return int(number/1.7)
+    elif team == 'RR':
+        return int(number/1.7)
+    elif team == 'RCB':
+        return int(number/1.9)
+    else:
+        return int(number/1.8)
