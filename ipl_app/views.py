@@ -127,26 +127,28 @@ class DashboardView(LoginRequiredMixin, FormView):
         match = Match.objects.get(id=match_id)
 
         if valid_bets(self.context['players'].count(), match):
-            winner = self.request.POST.get(f"{match_form.prefix}-winner")
-            win_team = Team.objects.get(
-                id=winner) if winner != '' else None
-            if win_team is None or win_team in (match.home_team, match.away_team):
-                settle_bets(match, win_team)
-                if match.typ == 'F':
-                    settle_ipl_winner(match, win_team)
+            if match.status == 'N'
+                winner = self.request.POST.get(f"{match_form.prefix}-winner")
+                win_team = Team.objects.get(
+                    id=winner) if winner != '' else None
+                if win_team is None or win_team in (match.home_team, match.away_team):
+                    settle_bets(match, win_team)
+                    if match.typ == 'F':
+                        settle_ipl_winner(match, win_team)
 
-                self.context['players'] = Player.objects.all().select_related('user',
-                                                                              'team')
-                self.context['player_bets'] = Bet.objects.filter(player=self.context['curr_player']).select_related('player__user',
-                                                                                                                    'match__home_team',
-                                                                                                                    'match__away_team',
-                                                                                                                    'bet_team').order_by('player__id', '-create_time')[:5]
+                    self.context['players'] = Player.objects.all().select_related('user',
+                                                                                  'team')
+                    self.context['player_bets'] = Bet.objects.filter(player=self.context['curr_player']).select_related('player__user',
+                                                                                                                        'match__home_team',
+                                                                                                                        'match__away_team',
+                                                                                                                        'bet_team').order_by('player__id', '-create_time')[:5]
 
-                messages.success(self.request, 'Match Winner updated')
+                    messages.success(self.request, 'Match Winner updated')
 
+                else:
+                    messages.warning(self.request, 'Winner Team not correct')
             else:
-                messages.warning(self.request, 'Winner Team not correct')
-
+                messages.warning(self.request, 'Match Status Updated already')
         else:
             messages.warning(self.request, 'All Default Bets Not Placed')
 
