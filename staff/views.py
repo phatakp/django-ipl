@@ -20,6 +20,11 @@ venues = {'CSK': 'Chennai', 'DC': 'Delhi', 'KXIP': 'Punjab', 'KKR': 'Kolkata',
           'RR': 'Rajasthan', 'RCB': 'Bangalore', 'MI': 'Mumbai', 'SRH': 'Hyderabad'}
 
 
+def isWithinTime(match):
+    return timezone.localtime().date() < match.date or \
+        (timezone.localtime().date() == match.date and timezone.localtime().hour < 12)
+
+
 def isStaffUser(user):
     obj = Player.objects.get(user=user)
     return obj.staff
@@ -68,6 +73,8 @@ def upload_match(request):
     else:
         context = {'staff_message': 'Not Authorized'}
 
+    context['curr_player'] = Player.objects.filter(user=request.user)
+
     return render(request, 'ipl_app/dashboard.html', context)
 
 
@@ -80,29 +87,30 @@ def default_bets(request=None, id=None):
                 date__lte=timezone.localtime().date(), status='N')
 
             for match in matches:
-                for player in Player.objects.all():
-                    if player.user == request.user:
-                        context['curr_player'] = player
-                    if not Bet.objects.filter(player=player, match=match).exists():
-                        Bet.objects.create(player=player,
-                                           match=match,
-                                           bet_amt=match.min_bet
-                                           )
+                if not isWithinTime(match):
+                    for player in Player.objects.all():
+                        if not Bet.objects.filter(player=player, match=match).exists():
+                            Bet.objects.create(player=player,
+                                               match=match,
+                                               bet_amt=match.min_bet
+                                               )
             context['staff_message'] = 'Default Bets Uploaded'
         else:
             context = {'staff_message': 'Not Authorized'}
     else:
         match = Match.objects.get(id=id)
-        for player in Player.objects.all():
-            if player.user == request.user:
-                context['curr_player'] = player
-            if not Bet.objects.filter(player=player, match=match).exists():
-                Bet.objects.create(player=player,
-                                   match=match,
-                                   bet_amt=match.min_bet
-                                   )
-        context['staff_message'] = 'Default Bets Uploaded'
+        if not isWithinTime(match):
+            for player in Player.objects.all():
+                if not Bet.objects.filter(player=player, match=match).exists():
+                    Bet.objects.create(player=player,
+                                       match=match,
+                                       bet_amt=match.min_bet
+                                       )
+            context['staff_message'] = 'Default Bets Uploaded'
+        else:
+            context['staff_message'] = 'Threshold not passed yet'
 
+    context['curr_player'] = Player.objects.filter(user=request.user)
     return render(request, 'ipl_app/dashboard.html', context)
 
 
@@ -158,6 +166,7 @@ def upload_history(request):
     else:
         context = {'staff_message': 'Not Authorized'}
 
+    context['curr_player'] = Player.objects.filter(user=request.user)
     return render(request, 'ipl_app/dashboard.html', context)
 
 

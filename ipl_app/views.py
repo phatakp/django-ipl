@@ -127,7 +127,7 @@ class DashboardView(LoginRequiredMixin, FormView):
         match = Match.objects.get(id=match_id)
 
         if valid_bets(self.context['players'].count(), match):
-            if match.status == 'N'
+            if match.status == 'N':
                 winner = self.request.POST.get(f"{match_form.prefix}-winner")
                 win_team = Team.objects.get(
                     id=winner) if winner != '' else None

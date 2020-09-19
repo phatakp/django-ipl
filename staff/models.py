@@ -23,7 +23,7 @@ class MatchHistory(models.Model):
 
     def __str__(self):
         """Unicode representation of Match History"""
-        return f"{str(self.home_team)} vs {str(self.away_team)} on {str(self.date)}"
+        return f"{str(self.team1)} vs {str(self.team2)} on {str(self.date)}"
 
 
 class AllStats(models.Model):
