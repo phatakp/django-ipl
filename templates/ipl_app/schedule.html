@@ -141,12 +141,12 @@ IPL | Schedule
                                         <td>{{bet.bet_team}}</td>
                                         <td>{{bet.bet_amt}}</td>
                                         {% if bet.status == 'D' or bet.status == 'L' %}
-                                        <td class="text-danger">{{bet.get_status_display}}</td>
+                                        <td class="text-warning">{{bet.get_status_display}}</td>
                                         {% else %}
                                         <td class="text-success">{{bet.get_status_display}}</td>
                                         {% endif %}
                                         {% if bet.lost_amt > 0 %}
-                                        <td class="text-danger">{{bet.lost_amt|floatformat:2}}</td>
+                                        <td class="text-warning">{{bet.lost_amt|floatformat:2}}</td>
                                         {% else %}
                                         <td class="text-success">{{bet.win_amt|floatformat:2}}</td>
                                         {% endif %}

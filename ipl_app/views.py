@@ -201,7 +201,7 @@ class ScheduleView(LoginRequiredMixin, ListView):
         return Match.objects.all().order_by('status','date')
 
     def get(self, request, *args, **kwargs):
-        self.object_list = self.model.objects.all()
+        self.object_list = self.get_queryset()
         context = super().get_context_data(**kwargs)
         context['match_id'] = kwargs.get('id', None)
         if context['match_id'] is not None:
