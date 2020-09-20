@@ -197,6 +197,9 @@ class ScheduleView(LoginRequiredMixin, ListView):
     paginate_by = 10
     form = BetListForm
 
+    def get_queryset(self):
+        return Match.objects.all().order_by('status','date')
+
     def get(self, request, *args, **kwargs):
         self.object_list = self.model.objects.all()
         context = super().get_context_data(**kwargs)
