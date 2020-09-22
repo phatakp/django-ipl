@@ -22,35 +22,34 @@ def isWithinTime(match):
 
 
 def validate_and_save(player, match, team, bet_amt):
-    print(bet_amt)
     if isWithinTime(match):
         if bet_amt.isnumeric():
-            if Bet.objects.filter(player=player, match=match).exists():
-                bet = Bet.objects.get(player=player, match=match)
-                if bet.bet_team != team or \
-                        bet.bet_amt >= int(bet_amt):
-                    return f'Rs.{bet.bet_amt} already bet for {bet.bet_team.name}. Can only increase amount', False
-                else:
-                    Bet.objects.filter(id=bet.id).update(bet_amt=int(bet_amt),
-                                                         status='P',
-                                                         create_time=timezone.localtime())
-                    # bet.bet_amt = int(bet_amt)
-                    # bet.status = 'P'
-                    # bet.create_time = timezone.localtime()
-                    # bet.save()
-                    return f"Bet increased to Rs.{bet_amt} for {team.name}", True
+            if int(bet_amt) % 10 == 0:
+                if Bet.objects.filter(player=player, match=match).exists():
+                    bet = Bet.objects.get(player=player, match=match)
+                    if bet.bet_amt >= int(bet_amt):
+                        return f'For changing bet minimum amount is Rs.{int(bet.bet_amt)+10}', False
+                    else:
+                        Bet.objects.filter(id=bet.id).update(bet_amt=int(bet_amt),
+                                                             bet_team=team,
+                                                             status='P',
+                                                             create_time=timezone.localtime())
 
-            elif int(bet_amt) >= match.min_bet:
-                Bet.objects.create(player=player,
-                                   match=match,
-                                   bet_team=team,
-                                   bet_amt=int(bet_amt),
-                                   status='P')
-                return f"Bet Placed - Rs.{bet_amt} for {team.name}", True
+                        return f"Bet Changed to Rs.{bet_amt} for {team.name}", True
+
+                elif int(bet_amt) >= match.min_bet:
+                    Bet.objects.create(player=player,
+                                       match=match,
+                                       bet_team=team,
+                                       bet_amt=int(bet_amt),
+                                       status='P')
+                    return f"Bet Placed Rs.{bet_amt} for {team.name}", True
+                else:
+                    return f"Minimum Bet is Rs.{match.min_bet}", False
             else:
-                return f"Minimum Bet is Rs.{match.min_bet}", False
+                return "Bet Amount should be multiple of 10", False
         else:
-            return f"Bet Amount should be number only", False
+            return "Bet Amount should be number only", False
     else:
         return f"Past 12PM IST. Cannot modify for {str(match)}", False
 

@@ -1,8 +1,7 @@
 from django import forms
 from django.forms import widgets
-from django.forms.widgets import HiddenInput
+from django.forms.widgets import DateInput
 from .models import Match, Bet
-from django.utils import timezone
 
 
 class BetForm(forms.ModelForm):
@@ -28,8 +27,16 @@ class MatchForm(forms.ModelForm):
         fields = ('winner', )
 
 
-class BetListForm(forms.ModelForm):
+class MatchListForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(MatchListForm, self).__init__(*args, **kwargs)
+        self.fields['home_team'].required = False
+        self.fields['away_team'].required = False
+        self.fields['date'].required = False
+
     class Meta:
-        model = Bet
-        exclude = "__all__"
-        widgets = {'player': forms.HiddenInput()}
+        model = Match
+        fields = ('home_team', 'away_team', 'date')
+        widgets = {'date': DateInput(attrs={'type': 'date'})}
+        labels = {'home_team': 'Team1',
+                  'away_team': 'Team2', }

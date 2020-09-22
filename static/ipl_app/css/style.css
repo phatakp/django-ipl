@@ -693,15 +693,57 @@ aside section {
     display: none;
 }
 
-.bets-row {
-    margin-top: 2em;
+.match-list .bets-row {
+    display: none;
+}
 
+.match-list .bets-row.show {
+    display: flex;
+    margin-top: 2em;
+}
+
+.btns-row {
+    display: none;
+}
+
+.btns-row.show {
+    display: flex;
 }
 
 .bets-row th,
 .bets-row td {
     font-size: small;
     color: #e9ec14;
+}
+
+.match-filter-form div {
+    display: inline-block;
+    position: relative;
+    margin-left: 0.5em;
+}
+
+.match-filter-form button {
+    display: inline-block;
+    position: relative;
+}
+
+.match-filter {
+    border: 1px solid black;
+    border-radius: 1em;
+    background: linear-gradient(45deg, rgba(12, 25, 202, 0), #d245);
+}
+
+#id_date {
+    width: 85%;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+#id_home_team,
+#id_away_team {
+    width: 75%;
+    padding-left: 0;
+    padding-right: 0;
 }
 
 /*  ----------General------------- */
@@ -726,6 +768,9 @@ aside section {
 
 }
 
+.text-default {
+    color: darkslategray !important;
+}
 
 
 /* Custom Scrollbar */

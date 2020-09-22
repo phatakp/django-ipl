@@ -106,6 +106,12 @@ class Match(models.Model):
         else:
             return self.get_typ_display()
 
+    @property
+    def bets(self):
+        return Bet.objects.filter(match=self).select_related('player__user',
+                                                             'match',
+                                                             'bet_team')
+
 
 class Bet(models.Model):
     STATUS_CHOICES = [('P', 'Placed'),

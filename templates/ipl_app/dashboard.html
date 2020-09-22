@@ -259,13 +259,14 @@ IPL | Dashboard
 
                             </tbody>
                         </table>
+
                     </div>
                 </div>
             </section>
 
             <section id="bet-history">
                 <div class="container-fluid">
-                    <h5 class="h5-responsive mb-2">Your Last 5 Bets</h5>
+                    <h5 class="h5-responsive mb-2">Your Bets</h5>
                     <div class="table-responsive">
                         <table class="table w-auto text-nowrap">
                             <thead>
@@ -315,6 +316,36 @@ IPL | Dashboard
 
                             </tbody>
                         </table>
+                        {% if player_bets %}
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination pagination-template d-flex justify-content-center">
+                                {% if player_bets.has_previous %}
+                                <li class="page-item"><a href="?page={{player_bets.previous_page_number}}"
+                                        class="page-link text-secondary"> <i class="fa fa-angle-left"></i></a></li>
+                                <li class="page-item"><a href="?page={{player_bets.previous_page_number}}"
+                                        class="page-link text-secondary">{{ player_bets.previous_page_number }}</a></li>
+                                {% else %}
+                                <li class="page-item"><a href="#" class="page-link text-default disabled"> <i
+                                            class="fa fa-angle-left"></i></a>
+                                </li>
+                                {% endif %}
+                                <li class="page-item"><a href="#"
+                                        class="page-link active text-white"><strong>{{ player_bets.number }}</strong>
+                                        <span class="sr-only">(current)</span></a></li>
+                                {% if player_bets.has_next %}
+                                <li class="page-item"><a href="?page={{player_bets.next_page_number}}"
+                                        class="page-link text-secondary">{{ player_bets.next_page_number }}</a></li>
+                                <li class="page-item"><a href="?page={{player_bets.next_page_number}}"
+                                        class="page-link text-secondary"> <i class="fa fa-angle-right"></i></a></li>
+                                {% else %}
+                                <li class="page-item"><a href="#" class="page-link text-default disabled"> <i
+                                            class="fa fa-angle-right"></i></a>
+                                </li>
+                                {% endif %}
+                            </ul>
+
+                        </nav>
+                        {% endif %}
                     </div>
                 </div>
             </section>

@@ -30,12 +30,22 @@ IPL | Schedule
 <main class='justify-content-center'>
     <section id="schedule-section">
         <div class="container-fluid">
+            <div class="row justify-content-center">
+                <div class="column match-filter">
+                    <h5 class="h5-responsive ml-2">Filter Matches</h5>
+                    <form class="match-filter-form " method="POST">
+                        {% csrf_token %}
+                        {{form|crispy}}
+                        <button type="submit" class="btn btn-sm">Get</button>
+                    </form>
+                </div>
+            </div>
 
             {% for match in matches %}
             {% with forloop.counter0 as match_counter %}
 
             {% if match_counter == 0 or match.date != matches|previous_date:match_counter %}
-            <h3 class="h3-responsive mb-4"><em>{{match.date|date:'l dS M, Y'}}</em></h3>
+            <h3 class="h3-responsive my-4"><em>{{match.date|date:'l dS M, Y'}}</em></h3>
             {% endif %}
 
             <div class="match-list mb-5">
@@ -94,23 +104,17 @@ IPL | Schedule
                     </div>
                 </div>
 
-                {% if match_id != match.id %}
+
+                {% if match.date|limit %}
+
                 <div class="row btns-row show justify-content-center">
                     <div class="column">
-                        <form class="bet-list-form">
-                            {% csrf_token %}
-                            {{form|crispy}}
-                            <input type="hidden" name="match" value={{match.id}}>
-                            <a class="btn btn-sm btn-bets" href="{% url 'iplapp:schedule' match.id %}">Check
-                                Bets</a>
-                        </form>
-
+                        <p class="btn btn-sm check-bet">See Bets</p>
                     </div>
-
                 </div>
+
                 {% endif %}
 
-                {% if match_id == match.id %}
 
                 <div class="row justify-content-center bets-row">
                     <div class="column m-auto">
@@ -129,7 +133,11 @@ IPL | Schedule
                                 </thead>
                                 <tbody>
 
-                                    {% for bet in bets %}
+                                    {% for bet in match.bets %}
+
+                                    <!-- {% if bet.match.id == match.id %} -->
+
+
 
                                     {% if forloop.counter|divisibleby:2 %}
                                     <tr class="purple darken-3">
@@ -152,6 +160,7 @@ IPL | Schedule
                                         {% endif %}
 
                                     </tr>
+                                    <!-- {% endif %} -->
                                     {% empty %}
                                     <tr class="deep-purple darken-3">
                                         <td colspan="5">No Bets yet</td>
@@ -163,13 +172,13 @@ IPL | Schedule
                         </div>
                     </div>
                 </div>
-                {% endif %}
+
             </div>
             {% endwith %}
             {% endfor %}
 
             <!-- Pagination -->
-            {% if is_paginated %}
+            <!-- {% if is_paginated %}
             <nav aria-label="Page navigation example">
                 <ul class="pagination pagination-template d-flex justify-content-center">
                     {% if page_obj.has_previous %}
@@ -188,7 +197,7 @@ IPL | Schedule
                     {% endif %}
                 </ul>
             </nav>
-            {% endif %}
+            {% endif %} -->
 
         </div>
 

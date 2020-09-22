@@ -37,16 +37,17 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'iplapp:schedule' %}"">Schedule</a>
+                <a class="nav-link" href="{% url 'iplapp:schedule' %}">Schedule</a>
             </li>
 
+
             <li class=" nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">Profile</a>
-                    <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="{% url 'accounts:pwd_change' %}">Change Password</a>
-                        <a class="dropdown-item" href="{% url 'accounts:logout' %}">Logout</a>
-                    </div>
+                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">Profile</a>
+                <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="{% url 'accounts:pwd_change' %}">Change Password</a>
+                    <a class="dropdown-item" href="{% url 'accounts:logout' %}">Logout</a>
+                </div>
             </li>
 
             {% if curr_player.staff %}

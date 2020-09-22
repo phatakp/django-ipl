@@ -5,12 +5,13 @@ from django.template import context
 from django.views.generic import TemplateView, FormView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Team, Match, Bet
-from .forms import MatchForm, BetForm, BetListForm
+from .forms import MatchForm, BetForm, MatchListForm
 from .validations import validate_and_save, settle_bets, valid_bets, settle_ipl_winner
 from django.utils import timezone
-
+from django.utils.dateparse import parse_date
 from django.db.models import Q
 from django.contrib import messages
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 Player = apps.get_model('accounts', 'Player')
 MatchHistory = apps.get_model('staff', 'MatchHistory')
@@ -48,27 +49,25 @@ class DashboardView(LoginRequiredMixin, FormView):
             self.context['curr_player'] = self.context['players'].get(
                 user=self.request.user)
 
-        self.context['match_dates'] = Match.objects.filter(status='N').values_list(
-            'date', flat=True).distinct()[:2]
-
-        date_count = len(self.context['match_dates'])
-
-        if date_count > 1:
-            self.context['matches'] = Match.objects.filter(Q(date=self.context['match_dates'][0]) |
-                                                           Q(date=self.context['match_dates'][1])).select_related('home_team',
-                                                                                                                  'away_team',
-                                                                                                                  'winner')
-        elif date_count > 0:
-            self.context['matches'] = Match.objects.filter(date=self.context['match_dates'][0]).select_related('home_team',
-                                                                                                               'away_team',
-                                                                                                               'winner')
+        self.context['matches'] = Match.objects.filter(status='N').select_related('home_team',
+                                                                                  'away_team',
+                                                                                  'winner')[:2]
 
         player_bets = self.context.get('player_bets', None)
         if player_bets is None:
             self.context['player_bets'] = Bet.objects.filter(player=self.context['curr_player']).select_related('player__user',
                                                                                                                 'match__home_team',
                                                                                                                 'match__away_team',
-                                                                                                                'bet_team').order_by('player__id', '-create_time')[:5]
+                                                                                                                'bet_team').order_by('player__id', '-create_time')
+            paginator = Paginator(self.context['player_bets'], 10)
+            page = self.request.GET.get('page')
+            try:
+                self.context['player_bets'] = paginator.page(page)
+            except PageNotAnInteger:
+                self.context['player_bets'] = paginator.page(1)
+            except EmptyPage:
+                self.context['player_bets'] = paginator.page(
+                    paginator.num_pages)
 
         # Get Forms
         self.context['bet_form'] = self._get_form(formcls=BetForm,
@@ -194,22 +193,33 @@ class ScheduleView(LoginRequiredMixin, ListView):
     redirect_field_name = 'ipl_app/schedule.html'
     template_name = "ipl_app/schedule.html"
     context_object_name = 'matches'
-    paginate_by = 10
-    form = BetListForm
+    # paginate_by = 10
 
     def get_queryset(self):
-        return Match.objects.all().order_by('status','date')
+        return Match.objects.select_related('home_team', 'away_team', 'winner')
 
-    def get(self, request, *args, **kwargs):
+    def get_context_data(self, **kwargs):
         self.object_list = self.get_queryset()
         context = super().get_context_data(**kwargs)
-        context['match_id'] = kwargs.get('id', None)
-        if context['match_id'] is not None:
-            match_date = Match.objects.get(id=context['match_id']).date
-            if timezone.localtime().date() > match_date or \
-                    (timezone.localtime().date() == match_date and timezone.localtime().hour >= 12):
-                context['bets'] = Bet.objects.filter(match__id=context['match_id']).select_related('player',
-                                                                                                   'match',
-                                                                                                   'bet_team')
-        context['curr_player'] = Player.objects.get(user=self.request.user)
+        context['form'] = MatchListForm(self.request.POST or None)
+        context['curr_player'] = Player.objects.select_related('user',
+                                                               'team').get(user=self.request.user)
+        return context
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        ht = request.POST.get('home_team')
+        at = request.POST.get('away_team')
+        dt = request.POST.get('date')
+        if dt != '':
+            context['matches'] = self.object_list.filter(date=parse_date(dt))
+
+        if ht != '':
+            context['matches'] = context['matches'].filter(Q(home_team__id=ht) |
+                                                           Q(away_team__id=ht))
+
+        if at != '':
+            context['matches'] = context['matches'].filter(Q(home_team__id=at) |
+                                                           Q(away_team__id=at))
+
         return render(request, self.template_name, context)

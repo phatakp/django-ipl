@@ -1,4 +1,5 @@
 from django import template
+from django.utils import timezone
 
 register = template.Library()
 
@@ -62,3 +63,8 @@ def divide(number, team):
         return int(number/1.9)
     else:
         return int(number/1.8)
+
+
+@register.filter
+def limit(dt):
+    return dt < timezone.localtime().date() or (dt == timezone.localtime().date() and timezone.localtime().hour >= 12)

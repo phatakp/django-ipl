@@ -47,7 +47,12 @@ $(document).ready(function () {
         $(this).toggleClass('show');
     });
 
-
+    $('.check-bet').on('click', function () {
+        $('.bets-row').removeClass('show');
+        $('.btns-row').addClass('show');
+        $(this).closest('.match-list').find('.bets-row').toggleClass('show');
+        $(this).closest('.btns-row').toggleClass('show');
+    });
 });
 
 $(function () {
