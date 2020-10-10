@@ -211,6 +211,29 @@ IPL | Dashboard
 
                 </div>
             </section>
+
+            <section id="team-change">
+                <div class="container ipl-winner">
+                    <h5 class="h5-responsive mb-2">Change IPL Winner Bet</h5>
+                    <small class="mb-4">
+
+                        {% if team_chg_msg|updated %}
+                        <strong class="text-success mb-4">{{team_chg_msg}}</strong>
+                        {% else %}
+                        <strong class="text-danger mb-4">{{team_chg_msg}}</strong>
+                        {% endif %}
+
+
+                    </small>
+                    <div class="team-chg-form mt-4">
+                        <form method="POST">
+                            {% csrf_token %}
+                            {{winner_chg_form|crispy}}
+                            <button class="btn btn-sm" type="submit">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
         </main>
         <aside class="col-lg-4 col-sm-12 justify-content-center">
             <section id="standings">

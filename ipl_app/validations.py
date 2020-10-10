@@ -1,4 +1,4 @@
-from .models import Bet, Match
+from .models import Bet, Match, Static
 from django.apps import apps
 from django.utils import timezone
 from django.db.models import Sum, F
@@ -304,13 +304,18 @@ def settle_ipl_winner(match, win_team):
     match_bets = Bet.objects.filter(match__isnull=True)
 
     bet_teams = get_team_totals(match_bets)
+    pool_amt = Static.objects.get(row=1).team_chg_amt
+    not_chg_count = Player.objects.filter(team_chgd=False).count()
 
     total_lost, total_win, _ = get_totals(bet_teams, win_team)
     if total_lost > 0:
         for bet in match_bets.filter(bet_team=win_team):
             if total_win > 0:
-                amt = bet.bet_amt / total_win * total_lost
+                amt = bet.bet_amt / total_win * (total_lost + pool_amt)
                 winning_bet(bet, amt)
         for bet in match_bets.exclude(bet_team=win_team):
             if total_win > 0:
                 losing_bet(bet, bet.bet_amt)
+            elif not bet.player.team_chgd:
+                amt = pool_amt / not_chg_count
+                winning_bet(bet, amt)

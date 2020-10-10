@@ -4,7 +4,7 @@ from .models import Team, Match, Static, Bet
 
 @admin.register(Static)
 class StaticAdmin(admin.ModelAdmin):
-    list_display = ("bet_choices",)
+    list_display = ("row", "bet_choices", "team_chg_amt")
 
 
 @admin.register(Team)

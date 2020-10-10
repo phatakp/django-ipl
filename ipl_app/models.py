@@ -5,9 +5,12 @@ from django.utils import timezone
 
 class Static(models.Model):
     CHOICE = ','.join(['20', '40', '60', '80', '100'])
+    row = models.PositiveSmallIntegerField(default=1)
     bet_choices = models.CharField(max_length=20,
                                    validators=[int_list_validator, ],
                                    default=CHOICE)
+
+    team_chg_amt = models.PositiveSmallIntegerField(default=0)
 
 
 class Team(models.Model):

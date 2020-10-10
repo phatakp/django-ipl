@@ -40,3 +40,14 @@ class MatchListForm(forms.ModelForm):
         widgets = {'date': DateInput(attrs={'type': 'date'})}
         labels = {'home_team': 'Team1',
                   'away_team': 'Team2', }
+
+
+class BetChangeForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(BetChangeForm, self).__init__(*args, **kwargs)
+        self.fields['bet_team'].required = False
+
+    class Meta:
+        model = Bet
+        fields = ('bet_team',)
+        labels = {'bet_team': 'New IPL Winner'}

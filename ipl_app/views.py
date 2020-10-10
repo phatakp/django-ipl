@@ -4,12 +4,12 @@ from django.apps import apps
 from django.template import context
 from django.views.generic import TemplateView, FormView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Team, Match, Bet
-from .forms import MatchForm, BetForm, MatchListForm
-from .validations import validate_and_save, settle_bets, valid_bets, settle_ipl_winner
+from .models import Team, Match, Bet, Static
+from .forms import MatchForm, BetForm, MatchListForm, BetChangeForm
+from .validations import validate_and_save, settle_bets, valid_bets, settle_ipl_winner, winning_bet
 from django.utils import timezone
 from django.utils.dateparse import parse_date
-from django.db.models import Q
+from django.db.models import Q, F
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -76,6 +76,9 @@ class DashboardView(LoginRequiredMixin, FormView):
         self.context['match_form'] = self._get_form(formcls=MatchForm,
                                                     prefix="win_")
 
+        self.context['winner_chg_form'] = BetChangeForm()
+        self.context['team_chg_msg'] = 'You will forfeit Rs.125 if you change the team'
+
         return self.context
 
     def _get_form(self, formcls, prefix):
@@ -114,12 +117,57 @@ class DashboardView(LoginRequiredMixin, FormView):
             self.context['player_bets'] = Bet.objects.filter(player=self.context['curr_player']).select_related('player__user',
                                                                                                                 'match__home_team',
                                                                                                                 'match__away_team',
-                                                                                                                'bet_team').order_by('player__id', '-create_time')[:5]
+                                                                                                                'bet_team').order_by('player__id', '-create_time')
+            paginator = Paginator(self.context['player_bets'], 10)
+            page = self.request.GET.get('page')
+            try:
+                self.context['player_bets'] = paginator.page(page)
+            except PageNotAnInteger:
+                self.context['player_bets'] = paginator.page(1)
+            except EmptyPage:
+                self.context['player_bets'] = paginator.page(
+                    paginator.num_pages)
+
             messages.success(self.request, message)
         else:
             messages.warning(self.request, message)
 
         self.context['match_message'] = match
+
+    def winner_chg_form_valid(self, new_team):
+        if timezone.localtime().date() == parse_date('2020-10-13') and \
+                timezone.localtime().hour < 19:
+            chg_team = Team.objects.get(id=new_team)
+            if chg_team != self.context['curr_player'].team:
+                Bet.objects.filter(player=self.context['curr_player'],
+                                   match__isnull=True).update(bet_team=chg_team,
+                                                              create_time=timezone.localtime())
+                Player.objects.filter(user=self.request.user).update(team=chg_team,
+                                                                     team_chgd=True,
+                                                                     curr_amt=F('curr_amt')-125)
+                Static.objects.update(team_chg_amt=F('team_chg_amt')+125)
+                self.context['team_chg_msg'] = f"IPL Winner updated to {chg_team.get_name_display()}"
+                self.context['players'] = Player.objects.all().select_related('user',
+                                                                              'team')
+                self.context['curr_player'] = self.context['players'].get(
+                    user=self.request.user)
+                self.context['player_bets'] = Bet.objects.filter(player=self.context['curr_player']).select_related('player__user',
+                                                                                                                    'match__home_team',
+                                                                                                                    'match__away_team',
+                                                                                                                    'bet_team').order_by('player__id', '-create_time')
+                paginator = Paginator(self.context['player_bets'], 10)
+                page = self.request.GET.get('page')
+                try:
+                    self.context['player_bets'] = paginator.page(page)
+                except PageNotAnInteger:
+                    self.context['player_bets'] = paginator.page(1)
+                except EmptyPage:
+                    self.context['player_bets'] = paginator.page(
+                        paginator.num_pages)
+            else:
+                self.context['team_chg_msg'] = f"You current team is already {chg_team.get_name_display()}"
+        else:
+            self.context['team_chg_msg'] = f"Team Change can only be done on Oct 13th b/w 12AM & 7PM"
 
     def match_form_valid(self, match_form):
         match_id = self.request.POST.get('match')
@@ -142,7 +190,8 @@ class DashboardView(LoginRequiredMixin, FormView):
                                                                                                                         'match__away_team',
                                                                                                                         'bet_team').order_by('player__id', '-create_time')[:5]
 
-                    messages.success(self.request, 'Match Winner updated')
+                    messages.success(
+                        self.request, f'Match Winner: {win_team.name}')
 
                 else:
                     messages.warning(self.request, 'Winner Team not correct')
@@ -156,6 +205,8 @@ class DashboardView(LoginRequiredMixin, FormView):
     def post(self, request, *args, **kwargs):
         self.context = self.get_context_data(**kwargs)
 
+        winner_chg_form = BetChangeForm(request.POST)
+
         if self.context['curr_player'].staff:
             match_form = self._post_form(formcls=MatchForm,
                                          prefix="win_")
@@ -166,6 +217,9 @@ class DashboardView(LoginRequiredMixin, FormView):
                                            prefix="bet_")
                 if bet_form is not None and bet_form.is_valid():
                     self.bet_form_valid(bet_form)
+                elif winner_chg_form.is_valid():
+                    new_team = self.request.POST.get('bet_team')
+                    self.winner_chg_form_valid(new_team)
                 else:
                     match_id = self.request.POST.get('match')
                     match = Match.objects.get(id=match_id)
@@ -178,6 +232,9 @@ class DashboardView(LoginRequiredMixin, FormView):
 
             if bet_form is not None and bet_form.is_valid():
                 self.bet_form_valid(bet_form)
+            elif winner_chg_form.is_valid():
+                new_team = self.request.POST.get('bet_team')
+                self.winner_chg_form_valid(new_team)
             else:
                 match_id = self.request.POST.get('match')
                 match = Match.objects.get(id=match_id)

@@ -68,3 +68,8 @@ def divide(number, team):
 @register.filter
 def limit(dt):
     return dt < timezone.localtime().date() or (dt == timezone.localtime().date() and timezone.localtime().hour >= 12)
+
+
+@register.filter
+def updated(msg):
+    return 'IPL Winner updated to'.lower() in msg.lower()

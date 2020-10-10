@@ -17,6 +17,8 @@ class Player(models.Model):
 
     bets_lost = models.PositiveSmallIntegerField(default=0)
 
+    team_chgd = models.BooleanField(default=False)
+
     class Meta:
         ordering = ['-curr_amt', ]
 
